@@ -3,6 +3,7 @@ package com.gesiath.miniscrumapi.controller;
 import com.gesiath.miniscrumapi.dto.CreateTaskRequestDTO;
 import com.gesiath.miniscrumapi.dto.TaskResponseDTO;
 import com.gesiath.miniscrumapi.dto.UpdateTaskRequestDTO;
+import com.gesiath.miniscrumapi.dto.UpdateTaskStatusRequestDTO;
 import com.gesiath.miniscrumapi.enumerator.Status;
 import com.gesiath.miniscrumapi.service.ITaskService;
 import jakarta.validation.Valid;
@@ -66,6 +67,14 @@ public class TaskController {
                                                   @RequestBody UpdateTaskRequestDTO dto){
 
         return ResponseEntity.ok(iTaskService.update(id, dto));
+
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<TaskResponseDTO> patchStatus(@PathVariable String id,
+                                                       @Valid @RequestBody UpdateTaskStatusRequestDTO dto){
+
+        return ResponseEntity.ok(iTaskService.patchStatus(id, dto));
 
     }
 

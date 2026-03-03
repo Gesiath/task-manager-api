@@ -3,6 +3,7 @@ package com.gesiath.miniscrumapi.service;
 import com.gesiath.miniscrumapi.dto.CreateTaskRequestDTO;
 import com.gesiath.miniscrumapi.dto.TaskResponseDTO;
 import com.gesiath.miniscrumapi.dto.UpdateTaskRequestDTO;
+import com.gesiath.miniscrumapi.dto.UpdateTaskStatusRequestDTO;
 import com.gesiath.miniscrumapi.entity.Task;
 import com.gesiath.miniscrumapi.entity.User;
 import com.gesiath.miniscrumapi.enumerator.Status;
@@ -102,7 +103,7 @@ public class TaskService implements ITaskService{
     public TaskResponseDTO update(String id, UpdateTaskRequestDTO dto) {
 
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new CustomDataNotFoundException("User not found"));
+                .orElseThrow(() -> new CustomDataNotFoundException("Task not found"));
 
         task.setTitle(dto.getTitle());
         task.setDescription(dto.getDescription());
@@ -124,6 +125,19 @@ public class TaskService implements ITaskService{
 
         return TaskMapper.toResponse(taskRepository.save(task));
 
+    }
+
+    @Override
+    public TaskResponseDTO patchStatus(String id, UpdateTaskStatusRequestDTO dto){
+
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new CustomDataNotFoundException("Task not found"));
+
+        validateStatusTransition(task.getStatus(), dto.getStatus());
+
+        task.setStatus(dto.getStatus());
+
+        return TaskMapper.toResponse(taskRepository.save(task));
     }
 
     @Override
