@@ -6,6 +6,7 @@ import com.gesiath.miniscrumapi.dto.UpdateTaskRequestDTO;
 import com.gesiath.miniscrumapi.dto.UpdateTaskStatusRequestDTO;
 import com.gesiath.miniscrumapi.entity.Task;
 import com.gesiath.miniscrumapi.entity.User;
+import com.gesiath.miniscrumapi.enumerator.SprintStatus;
 import com.gesiath.miniscrumapi.enumerator.Status;
 import com.gesiath.miniscrumapi.exception.CustomDataNotFoundException;
 import com.gesiath.miniscrumapi.mapper.TaskMapper;
@@ -132,6 +133,12 @@ public class TaskService implements ITaskService{
 
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new CustomDataNotFoundException("Task not found"));
+
+        if (task.getSprint() != null &&
+                task.getSprint().getStatus() == SprintStatus.CLOSED) {
+
+            throw new IllegalStateException("Cannot modify tasks of a closed sprint");
+        }
 
         validateStatusTransition(task.getStatus(), dto.getStatus());
 

@@ -23,13 +23,21 @@ public class Task {
     private String description;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Status status;
+
     private LocalDate doDate;
+
     @Column(nullable = false, updatable = false)
     private LocalDate createdAt;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sprint_id")
+    private Sprint sprint;
 
     @PrePersist
     public void prePersist() {

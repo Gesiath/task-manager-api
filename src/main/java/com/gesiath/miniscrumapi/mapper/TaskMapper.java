@@ -15,6 +15,8 @@ public class TaskMapper {
                 .doDate(task.getDoDate())
                 .createdAt(task.getCreatedAt())
                 .userName(task.getUser() != null ? task.getUser().getName() : null)
+                .sprintId(task.getSprint() != null ? task.getSprint().getId() : null)
+                .sprintName(task.getSprint() != null ? task.getSprint().getTitle() : null)
                 .build();
     }
 }

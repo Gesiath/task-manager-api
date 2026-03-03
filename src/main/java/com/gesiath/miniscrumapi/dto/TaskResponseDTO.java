@@ -19,5 +19,7 @@ public class TaskResponseDTO {
     private LocalDate doDate;
     private LocalDate createdAt;
     private String userName;
+    private String sprintId;
+    private String sprintName;
 
 }
